@@ -785,10 +785,14 @@ def main():
 		while True:
 
 			if Hoaxshell.prompt_ready:
-
-				user_input = input(prompt).strip()
-				user_input_lower = user_input.lower()
-
+				try:
+					user_input = input(prompt).strip()
+					user_input_lower = user_input.lower()
+				except KeyboardInterrupt:
+					if "yes" in input("Do you want to close the terminal?"):
+						Hoaxshell.terminate()
+					else:
+						continue
 				if user_input_lower == 'help':
 					promptHelpMsg()
 
@@ -841,6 +845,7 @@ def main():
 
 	except KeyboardInterrupt:
 		Hoaxshell.terminate()
+		
 
 
 if __name__ == '__main__':
