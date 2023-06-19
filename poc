@@ -1,0 +1,20 @@
+#include <windows.h>
+
+int main(int argc, char *argv[]) {
+    STARTUPINFO startupInfo;
+    PROCESS_INFORMATION processInfo;
+
+    ZeroMemory(&startupInfo, sizeof(startupInfo));
+    startupInfo.cb = sizeof(startupInfo);
+    startupInfo.dwFlags = STARTF_USESHOWWINDOW;
+    startupInfo.wShowWindow = SW_HIDE;
+
+    CreateProcess(NULL, "echo 3", NULL, NULL, FALSE, 0, NULL, NULL, &startupInfo, &processInfo);
+
+    WaitForSingleObject(processInfo.hProcess, INFINITE);
+
+    CloseHandle(processInfo.hProcess);
+    CloseHandle(processInfo.hThread);
+
+    return 0;
+}
