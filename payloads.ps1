@@ -36,7 +36,7 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
 } `
 -ContentType "application/x-www-form-urlencoded" `
 -Body "download=AdFind.zip&email=&B1=Download+Now"  -OutFile $outputPath
-Expand-Archive -Path $outputPath -DestinationPath $adfindPathx  
+Expand-Archive -Path $outputPath -DestinationPath $adfindPath
 ./adfind/adfind.exe -f "objectcategory=computer" > "./../computers.txt"
 
 $user = whoami
