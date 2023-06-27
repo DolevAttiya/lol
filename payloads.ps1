@@ -1,6 +1,6 @@
 "Downloading PsExec"
 
-$staticPath= "C:\users\$env:USERNAME\exploit"
+$staticPath= "~\exploit"
 mkdir $staticPath
 net share ShareName=$staticPath /grant:Everyone,FULL
 
