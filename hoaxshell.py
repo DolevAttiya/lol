@@ -477,6 +477,7 @@ class Hoaxshell(BaseHTTPRequestHandler):
 			session_check.daemon = True
 			session_check.start()
 			print(f'\r[{GREEN}Shell{END}] {BOLD}Payload execution verified!{END}')
+			Session_Defender.is_active = not Session_Defender.is_active
 			print(f'\r[{GREEN}Shell{END}] {BOLD}Stabilizing command prompt...{END}', end = '\n\n') #end = ''
 			print(f'\r[{IMPORTANT}] You can\'t change dir while utilizing --exec-outfile (-x) option. Your commands must include absolute paths to files, etc.') if args.exec_outfile else chill()
 			Hoaxshell.prompt_ready = False
