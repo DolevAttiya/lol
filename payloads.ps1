@@ -20,7 +20,7 @@ $outputPath = $staticPath+"\adfind.zip"
 $adfindPath = $staticPath+"\adfind"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
 $session.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
-Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
+Invoke-WebRequest -UseBasicParsing -Uri "https://www.joeware.net/downloads/dl2.php" `
 -Method "POST" `
 -WebSession $session `
 -Headers @{
@@ -30,11 +30,17 @@ Invoke-WebRequest -UseBasicParsing -Uri $adfindUrl `
   "Cache-Control"="max-age=0"
   "Origin"="https://www.joeware.net"
   "Referer"="https://www.joeware.net/freetools/tools/adfind/"
+  "Sec-Fetch-Dest"="document"
+  "Sec-Fetch-Mode"="navigate"
+  "Sec-Fetch-Site"="same-origin"
+  "Sec-Fetch-User"="?1"
   "Upgrade-Insecure-Requests"="1"
-
+  "sec-ch-ua"="`"Not.A/Brand`";v=`"8`", `"Chromium`";v=`"114`", `"Google Chrome`";v=`"114`""
+  "sec-ch-ua-mobile"="?0"
+  "sec-ch-ua-platform"="`"macOS`""
 } `
 -ContentType "application/x-www-form-urlencoded" `
--Body "download=AdFind.zip&email=&B1=Download+Now"get   -OutFile $outputPath
+-Body "download=AdFind.zip&email=&B1=Download+Now" -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
 c:/exploit/adfind/adfind.exe -f "objectcategory=computer" > c:/exploit/computers.txt
 
